@@ -9,7 +9,6 @@ def verification(accno, password, cursor, typ):
         print("Please Choose From 1 and 2")
 
     data = cursor.fetchone()
-    print(data)
     if data[1] == password:
         print("Verification Successfull!")
         return True
@@ -31,6 +30,9 @@ def openAccount(empno, cursor, con):
     cursor.execute(
         "INSERT INTO transactions (type,accontNo,datetime,empNo) VALUES('openacc','{accno}',NOW(),'{empno}')".format(accno=lastNo, empno=empno))
     con.commit()
+    cursor.execute("SELECT MAX(accountNo) FROM customer_info")
+    no = cursor.fetchone()[0]
+    print("Success! Your Account Number is: {no}".format(no=no))
 
 
 def remAccount():
@@ -63,7 +65,7 @@ def deposit(accno, cursor, con):
 
     cursor.execute(  # prints final balance
         "SELECT balance from customer_info where accountNo={acc}".format(acc=accno))
-    curBal = (cursor.fetchone())[0]
+    curBal = cursor.fetchone()[0]
     print("Success! \nCurrent Balance: {bal}".format(bal=curBal))
 
 
@@ -80,4 +82,4 @@ def transHistory(accno, cursor):
         "SELECT datetime,type,transaction_amount from transactions where accontNo={acc};".format(acc=accno))
     data = cursor.fetchall()
     for rec in data:
-        print(str(rec[0]), rec[1], rec[2])
+        print((rec[0]), rec[1], rec[2])

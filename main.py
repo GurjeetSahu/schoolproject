@@ -2,7 +2,7 @@ import module
 import mysql.connector as connector
 
 con = connector.connect(host="localhost", user="root",
-                        passwd="root", database="bankmanagement")
+                        passwd="1234", database="bankmanagement", charset="utf8")
 cursor = con.cursor()
 
 print("Welcome to State Bank of India.")
@@ -23,7 +23,7 @@ if typ == 1 and module.verification(accno, password, cursor, typ) == True:
         module.transHistory(accno, cursor)
 
 elif typ == 2 and module.verification(accno, password, cursor, typ) == True:
-    act = int(input("1.Add Account. \n2.Remove Account"))
+    act = int(input("1.Add Account. \n2.Remove Account: "))
     if act == 1:
         module.openAccount(accno, cursor, con)
 else:
