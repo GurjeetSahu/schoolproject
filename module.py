@@ -53,8 +53,6 @@ def withdraw(accno, cursor, con):
 
 
 def deposit(accno, cursor, con):
-
-    # Adds Balance To Account
     amount = float(input("Put Amount in Cash Box: "))
     cursor.execute("UPDATE customer_info SET balance = balance+{am} WHERE accountNo ={acno};".format(
         am=amount, acno=accno))
@@ -63,7 +61,7 @@ def deposit(accno, cursor, con):
         accountNo=accno, amount=amount))
     con.commit()
 
-    cursor.execute(  # prints final balance
+    cursor.execute(
         "SELECT balance from customer_info where accountNo={acc}".format(acc=accno))
     curBal = cursor.fetchone()[0]
     print("Success! \nCurrent Balance: {bal}".format(bal=curBal))
@@ -83,3 +81,10 @@ def transHistory(accno, cursor):
     data = cursor.fetchall()
     for rec in data:
         print((rec[0]), rec[1], rec[2])
+
+
+def printTable(cursor, choice):
+    cursor.execute("SELECT * FROM {choice}".format(choice=choice))
+    result = cursor.fetchall()
+    for row in result:
+        print(row)
